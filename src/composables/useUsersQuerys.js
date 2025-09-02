@@ -25,4 +25,14 @@ export default function useUsers() {
     loading: userLoading,
     error: userError,
   } = useLazyQuery(GET_USER, null, { fetchPolicy: 'network-only' })
+
+  // El useEffect de vue en accion
+  // usersResult sera la dependencia
+  watch(usersResult, (val) => {
+    if (!val) return
+    // Obtenemos los datos a traves de un operador ternario
+    const data = val.users && val.users.data ? val.users.data : []
+    users.value = data
+    // Guardamos los datos de la API en mi estado GLOBAL
+  })
 }

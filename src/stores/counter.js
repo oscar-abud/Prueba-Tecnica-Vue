@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
-export const useCounterStore = defineStore('counter', () => {
+export const useUsersStore = defineStore('users', () => {
   // Variables de estado
   const users = ref([])
   const currentUser = ref(null)
