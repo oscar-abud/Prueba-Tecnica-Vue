@@ -16,4 +16,13 @@ export default function useUsers() {
     null,
     { fetchPolicy: 'network-only' }, //Ignorara la cache y buscara siempre al servidor
   )
+
+  // Usuario individual (lazy)
+  const currentUser = ref(null)
+  const {
+    load: loadUser,
+    result: userResult,
+    loading: userLoading,
+    error: userError,
+  } = useLazyQuery(GET_USER, null, { fetchPolicy: 'network-only' })
 }
