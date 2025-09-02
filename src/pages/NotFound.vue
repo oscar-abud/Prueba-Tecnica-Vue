@@ -10,3 +10,16 @@ import Footer from '@/components/Footer.vue'
   </main>
   <Footer />
 </template>
+
+<style scoped>
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+}
+</style>
