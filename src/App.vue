@@ -1,5 +1,13 @@
-<script setup></script>
+<template>
+  <div class="container">
+    <router-view />
+  </div>
+</template>
 
-<template></template>
-
-<style scoped></style>
+<style scoped>
+.container {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100dvh;
+}
+</style>
