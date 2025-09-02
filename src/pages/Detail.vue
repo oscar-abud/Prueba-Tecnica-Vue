@@ -5,6 +5,12 @@ import Footer from '@/components/Footer.vue'
 
 <template>
   <Header />
-  <main>Hola Mundo</main>
+  <main></main>
   <Footer />
 </template>
+
+<style scoped>
+main {
+  max-width: 1280px;
+}
+</style>
