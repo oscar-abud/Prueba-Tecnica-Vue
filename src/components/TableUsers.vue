@@ -7,6 +7,7 @@ defineProps({
 </script>
 
 <template>
+  <!-- Filas de los usuarios -->
   <div class="grid row">
     <div>{{ id }}</div>
     <div>{{ name }}</div>
