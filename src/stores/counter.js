@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
 export const useUsersStore = defineStore('users', () => {
-  // Variables de estado
+  // Variables de estado reactivo
   const users = ref([])
   const currentUser = ref(null)
 
@@ -14,7 +14,7 @@ export const useUsersStore = defineStore('users', () => {
   const userLoading = ref(true)
   const userError = ref(null)
 
-  // Getters
+  // Getters de funciones derivadas
   const userCount = computed(() => users.value.length)
   const hasUsers = computed(() => users.value && users.value.length > 0)
   const isAnyLoading = computed(() => usersLoading.value || userLoading.value)
@@ -44,6 +44,7 @@ export const useUsersStore = defineStore('users', () => {
     userError.value = err ? err : null
   }
 
+  // Resetea todos los estados a sus valores iniciales
   function resetUsersState() {
     users.value = []
     currentUser.value = null
