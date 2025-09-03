@@ -8,24 +8,40 @@ import TableHeaderGrid from '@/components/TableHeader.vue'
 import TableUsersGrid from '@/components/TableUsers.vue'
 import InputFilter from '@/components/InputFilter.vue'
 
-//Importando
-// import useUsers from '../composables/useUsersQuerys'
+/*-- IMPORTANDO LOS COMPOSABLES  --*/
+// QUERYS
 import useUsers from '@/composables/useUsersQuerys'
+// MUTATIONS
+import usePostMutation from '@/composables/usePostMutation'
 const { users, usersLoading, usersError, store } = useUsers()
-console.log('Usuarios: ', users)
+const { deleteUser } = usePostMutation()
 
+//*-- FILTRAR POR NOMBRE O MAIL --*/
 const search = ref('')
+
 // Cambio en vivo con computed
 const filteredUsers = computed(() => {
   const val = search.value.trim().toLowerCase()
-  if (!val) return users.value // Si no hay val en el search se mostraran los usuarios por defecto
-  const found = users.value.filter(
-    (u) =>
-      u.name.toLowerCase().includes(val.toLowerCase()) ||
-      u.email.toLowerCase().includes(val.toLowerCase()),
+  if (!val) return users.value
+
+  return users.value.filter(
+    (u) => u.name.toLowerCase().includes(val) || u.email.toLowerCase().includes(val),
   )
-  return found
 })
+
+/*-- ELIMINAR USUARIO --*/
+function handleDelete(id) {
+  const confirmed = confirm('¿Estás seguro de eliminar al usuario?')
+  if (!confirmed) return
+
+  deleteUser(id)
+    .then(() => {
+      store.setUsers(store.users.filter((u) => u.id !== id))
+    })
+    .catch((err) => {
+      alert(`Error al eliminar al usuario con id ${id}, ${err.message}`)
+    })
+}
 </script>
 
 <template>
@@ -50,6 +66,7 @@ const filteredUsers = computed(() => {
           :id="Number(user.id)"
           :name="user.name"
           :email="user.email"
+          @delete="handleDelete"
         />
 
         <!-- Paginación -->
