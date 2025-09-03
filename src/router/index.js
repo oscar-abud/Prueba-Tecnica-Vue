@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 // Importando vistas
 import List from '@/pages/List.vue'
-import Detail from '@/pages/Detail.vue'
 import NotFound from '@/pages/NotFound.vue'
+import Create from '@/pages/Create.vue'
 
 const routes = [
   { path: '/users', component: List },
-  { path: '/users/:id', component: Detail, props: true },
+  { path: '/users/:id', component: Create, props: true },
   { path: '/:pathMatch(.*)*', component: NotFound },
 ]
 
