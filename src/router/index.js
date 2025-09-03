@@ -5,8 +5,8 @@ import Detail from '@/pages/Detail.vue'
 import NotFound from '@/pages/NotFound.vue'
 
 const routes = [
-  { path: '/posts', component: List },
-  { path: '/posts/:id', component: Detail, props: true },
+  { path: '/users', component: List },
+  { path: '/users/:id', component: Detail, props: true },
   { path: '/:pathMatch(.*)*', component: NotFound },
 ]
 
