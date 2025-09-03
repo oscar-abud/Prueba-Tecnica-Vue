@@ -1,12 +1,20 @@
 <script setup>
+import { ref } from 'vue'
+
+/*-- IMPORTANDO LOS COMPONENTES --*/
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
-// Tabla grid header
 import TableHeaderGrid from '@/components/TableHeader.vue'
 import TableUsersGrid from '@/components/TableUsers.vue'
+import InputFilter from '@/components/InputFilter.vue'
+
 //Importando
-import useUsers from '../composables/useUsersQuerys'
-const { users, usersLoading, usersError } = useUsers()
+// import useUsers from '../composables/useUsersQuerys'
+import useUsers from '@/composables/useUsersQuerys'
+const { users, usersLoading, usersError, store } = useUsers()
+console.log('Usuarios: ', users)
+
+const filteredUsers = ref(users.value)
 </script>
 
 <template>
@@ -17,19 +25,18 @@ const { users, usersLoading, usersError } = useUsers()
       <div id="loading" v-if="usersLoading">
         <h1>Cargando...</h1>
       </div>
-      <div v-else>
+      <div v-else-if="users">
         <!-- Filtro -->
-        <input type="text" placeholder="Filtrar por nombre o email..." class="filter-input" />
-
+        <InputFilter :users="users" v-model:filtered="filteredUsers" />
         <!-- Tabla tipo grid Header -->
         <TableHeaderGrid />
 
         <!-- Filas de usuarios -->
         <!-- <TableUsersGrid id="1" name="Oscar Palma" email="oscarP@mail.com" /> -->
         <TableUsersGrid
-          v-for="user in users"
+          v-for="user in filteredUsers"
           :key="user.id"
-          :id="user.id"
+          :id="Number(user.id)"
           :name="user.name"
           :email="user.email"
         />
@@ -40,6 +47,9 @@ const { users, usersLoading, usersError } = useUsers()
             <span>Página 1 de 10</span>
             <button class="next-btn">Siguiente</button>
             </div> -->
+      </div>
+      <div v-else>
+        <h1>Error: {{ usersError }}</h1>
       </div>
     </div>
   </main>
@@ -58,14 +68,6 @@ const { users, usersLoading, usersError } = useUsers()
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
-}
-
-.filter-input {
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
 }
 
 .row {
