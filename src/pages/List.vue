@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 /*-- IMPORTANDO LOS COMPONENTES --*/
 import Header from '@/components/Header.vue'
@@ -14,7 +14,18 @@ import useUsers from '@/composables/useUsersQuerys'
 const { users, usersLoading, usersError, store } = useUsers()
 console.log('Usuarios: ', users)
 
-const filteredUsers = ref(users.value)
+const search = ref('')
+// Cambio en vivo con computed
+const filteredUsers = computed(() => {
+  const val = search.value.trim().toLowerCase()
+  if (!val) return users.value // Si no hay val en el search se mostraran los usuarios por defecto
+  const found = users.value.filter(
+    (u) =>
+      u.name.toLowerCase().includes(val.toLowerCase()) ||
+      u.email.toLowerCase().includes(val.toLowerCase()),
+  )
+  return found
+})
 </script>
 
 <template>
@@ -27,7 +38,7 @@ const filteredUsers = ref(users.value)
       </div>
       <div v-else-if="users">
         <!-- Filtro -->
-        <InputFilter :users="users" v-model:filtered="filteredUsers" />
+        <InputFilter v-model="search" placeholder="Buscar usuario por nombre o email..." />
         <!-- Tabla tipo grid Header -->
         <TableHeaderGrid />
 
