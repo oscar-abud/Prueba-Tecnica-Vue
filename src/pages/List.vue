@@ -6,6 +6,7 @@ import TableHeaderGrid from '@/components/TableHeader.vue'
 import TableUsersGrid from '@/components/TableUsers.vue'
 //Importando
 import useUsers from '../composables/useUsersQuerys'
+const { users, usersLoading, usersError } = useUsers()
 </script>
 
 <template>
@@ -13,21 +14,32 @@ import useUsers from '../composables/useUsersQuerys'
   <main>
     <div class="user-table-container">
       <h1 class="title">Listado de Usuarios</h1>
+      <div id="loading" v-if="usersLoading">
+        <h1>Cargando...</h1>
+      </div>
+      <div v-else>
+        <!-- Filtro -->
+        <input type="text" placeholder="Filtrar por nombre o email..." class="filter-input" />
 
-      <!-- Filtro -->
-      <input type="text" placeholder="Filtrar por nombre o email..." class="filter-input" />
+        <!-- Tabla tipo grid Header -->
+        <TableHeaderGrid />
 
-      <!-- Tabla tipo grid Header -->
-      <TableHeaderGrid />
+        <!-- Filas de usuarios -->
+        <!-- <TableUsersGrid id="1" name="Oscar Palma" email="oscarP@mail.com" /> -->
+        <TableUsersGrid
+          v-for="user in users"
+          :key="user.id"
+          :id="user.id"
+          :name="user.name"
+          :email="user.email"
+        />
 
-      <!-- Filas de usuarios -->
-      <!-- <TableUsersGrid id="1" name="Oscar Palma" email="oscarP@mail.com" /> -->
-
-      <!-- Paginación -->
-      <div class="pagination">
-        <button class="prev-btn" disabled>Anterior</button>
-        <span>Página 1 de 10</span>
-        <button class="next-btn">Siguiente</button>
+        <!-- Paginación -->
+        <div class="pagination">
+          <button class="prev-btn" disabled>Anterior</button>
+          <span>Página 1 de 10</span>
+          <button class="next-btn">Siguiente</button>
+        </div>
       </div>
     </div>
   </main>
@@ -107,5 +119,9 @@ import useUsers from '../composables/useUsersQuerys'
 .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+#loading {
+  text-align: center;
 }
 </style>
