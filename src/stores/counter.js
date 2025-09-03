@@ -28,6 +28,14 @@ export const useUsersStore = defineStore('users', () => {
     currentUser.value = payload ?? null
   }
 
+  function addUser(user) {
+    users.value.push(user)
+  }
+
+  function removeUser(id) {
+    users.value = users.value.filter((u) => u.id !== id)
+  }
+
   function setUsersLoading(flag) {
     usersLoading.value = flag ? true : false
   }
@@ -76,5 +84,7 @@ export const useUsersStore = defineStore('users', () => {
     setUserLoading,
     setUserError,
     resetUsersState,
+    addUser,
+    removeUser,
   }
 })

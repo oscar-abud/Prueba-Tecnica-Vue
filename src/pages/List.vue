@@ -1,46 +1,40 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-/*-- IMPORTANDO LOS COMPONENTES --*/
+/*-- COMPONENTES --*/
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import TableHeaderGrid from '@/components/TableHeader.vue'
 import TableUsersGrid from '@/components/TableUsers.vue'
 import InputFilter from '@/components/InputFilter.vue'
 
-/*-- IMPORTANDO LOS COMPOSABLES  --*/
-// QUERYS
+/*-- COMPOSABLES --*/
+// Query de usuarios
 import useUsers from '@/composables/useUsersQuerys'
-// MUTATIONS
-import usePostMutation from '@/composables/usePostMutation'
-const { users, usersLoading, usersError, store } = useUsers()
-const { deleteUser } = usePostMutation()
+// Mutaciones (crear / eliminar)
+import useUserMutation from '@/composables/useUserMutation'
 
-//*-- FILTRAR POR NOMBRE O MAIL --*/
+const { users, usersLoading, usersError } = useUsers()
+const { deleteUser } = useUserMutation()
+
+// Filtro
 const search = ref('')
-
-// Cambio en vivo con computed
 const filteredUsers = computed(() => {
   const val = search.value.trim().toLowerCase()
   if (!val) return users.value
-
   return users.value.filter(
     (u) => u.name.toLowerCase().includes(val) || u.email.toLowerCase().includes(val),
   )
 })
 
-/*-- ELIMINAR USUARIO --*/
+// Eliminar usuario
 function handleDelete(id) {
   const confirmed = confirm('¿Estás seguro de eliminar al usuario?')
   if (!confirmed) return
 
-  deleteUser(id)
-    .then(() => {
-      store.setUsers(store.users.filter((u) => u.id !== id))
-    })
-    .catch((err) => {
-      alert(`Error al eliminar al usuario con id ${id}, ${err.message}`)
-    })
+  deleteUser(id).catch((err) => {
+    alert(`Error al eliminar al usuario con id ${id}: ${err.message}`)
+  })
 }
 </script>
 
@@ -49,42 +43,41 @@ function handleDelete(id) {
   <main>
     <div class="user-table-container">
       <h1 class="title">Listado de Usuarios</h1>
-      <div id="loading" v-if="usersLoading">
+
+      <!-- Loading -->
+      <div v-if="usersLoading" id="loading">
         <h1>Cargando...</h1>
       </div>
-      <div v-else-if="users">
+
+      <!-- Error -->
+      <div v-else-if="usersError">
+        <h1>Error: {{ usersError }}</h1>
+      </div>
+
+      <!-- Tabla -->
+      <div v-else>
         <!-- Filtro -->
         <InputFilter v-model="search" placeholder="Buscar usuario por nombre o email..." />
-        <!-- Tabla tipo grid Header -->
+
+        <!-- Tabla Header -->
         <TableHeaderGrid />
 
-        <!-- Filas de usuarios -->
-        <!-- <TableUsersGrid id="1" name="Oscar Palma" email="oscarP@mail.com" /> -->
+        <!-- Filas -->
         <TableUsersGrid
           v-for="user in filteredUsers"
           :key="user.id"
-          :id="Number(user.id)"
+          :id="user.id"
           :name="user.name"
           :email="user.email"
           @delete="handleDelete"
         />
-
-        <!-- Paginación -->
-        <!-- <div class="pagination">
-            <button class="prev-btn" disabled>Anterior</button>
-            <span>Página 1 de 10</span>
-            <button class="next-btn">Siguiente</button>
-            </div> -->
-      </div>
-      <div v-else>
-        <h1>Error: {{ usersError }}</h1>
       </div>
     </div>
   </main>
   <Footer />
 </template>
 
-<style>
+<style scoped>
 .user-table-container {
   max-width: 800px;
   margin: 2rem auto;
@@ -96,10 +89,6 @@ function handleDelete(id) {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
-}
-
-.row {
-  border-bottom: 1px solid #ddd;
 }
 
 /* Botones */
@@ -131,26 +120,7 @@ function handleDelete(id) {
   background-color: #d9363e;
 }
 
-/* Paginación */
-.pagination {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1rem;
-}
-
-.pagination button {
-  padding: 0.4rem 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.pagination button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
+/* Loading */
 #loading {
   display: flex;
   justify-content: center;

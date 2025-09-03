@@ -1,21 +1,65 @@
 <script setup>
+import { ref } from 'vue'
+/*-- IMPORTANDO COMPONENTES -- */
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
+import useUserMutation from '@/composables/useUserMutation'
+
+//Estados locales
+const name = ref('')
+const email = ref('')
+const username = ref('')
+
+const { createUser } = useUserMutation()
+const handleSubmit = async () => {
+  if (!name.value || !email.value || !username.value) return alert('Completa los campos')
+
+  try {
+    const { data, error } = await createUser({
+      name: name.value,
+      email: email.value,
+      username: username.value,
+    })
+
+    // Alert del usuario creado
+    if (error) {
+      console.error(errors)
+      return alert('Error al crear usuario')
+    }
+
+    if (data?.createUser) {
+      const user = data.createUser
+      alert(
+        `Usuario creado:\nNombre: ${user.name}\nEmail: ${user.email}\nUsername: ${user.username}`,
+      )
+    }
+
+    name.value = ''
+    email.value = ''
+    username.value = ''
+  } catch (err) {
+    console.log(err.message)
+  }
+}
 </script>
 
 <template>
   <Header />
   <main>
-    <form>
+    <form @submit.prevent="handleSubmit">
       <div class="input">
         <p>Nombre:</p>
-        <input type="text" />
+        <input type="text" v-model="name" />
       </div>
       <div class="input">
         <p>Email:</p>
-        <input type="text" />
+        <input type="text" v-model="email" />
       </div>
-      <button>Crear usuario</button>
+      <div class="input">
+        <p>Username:</p>
+        <input type="text" v-model="username" />
+      </div>
+      <button type="submit">Crear usuario</button>
     </form>
   </main>
   <Footer />
@@ -44,7 +88,7 @@ form {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 20px;
   width: 100%;
 }

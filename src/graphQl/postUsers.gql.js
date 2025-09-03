@@ -6,3 +6,14 @@ export const DELETE_USER = gql`
     deleteUser(id: $id)
   }
 `
+// Creacion de un usuario por input
+export const CREATE_USER = gql`
+  mutation ($input: CreateUserInput!) {
+    createUser(input: $input) {
+      id
+      name
+      username
+      email
+    }
+  }
+`
