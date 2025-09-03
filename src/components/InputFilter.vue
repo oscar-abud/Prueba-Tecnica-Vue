@@ -14,6 +14,7 @@ function onInput(event) {
 </script>
 
 <template>
+  <!-- Nuestro v-model sera bidireccional -->
   <input
     type="text"
     :placeholder="placeholder"
