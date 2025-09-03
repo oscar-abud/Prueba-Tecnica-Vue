@@ -36,10 +36,10 @@ const { users, usersLoading, usersError } = useUsers()
 
         <!-- Paginación -->
         <!-- <div class="pagination">
-          <button class="prev-btn" disabled>Anterior</button>
-          <span>Página 1 de 10</span>
-          <button class="next-btn">Siguiente</button>
-        </div> -->
+            <button class="prev-btn" disabled>Anterior</button>
+            <span>Página 1 de 10</span>
+            <button class="next-btn">Siguiente</button>
+            </div> -->
       </div>
     </div>
   </main>
