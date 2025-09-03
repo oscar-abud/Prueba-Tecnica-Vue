@@ -35,11 +35,11 @@ const { users, usersLoading, usersError } = useUsers()
         />
 
         <!-- Paginación -->
-        <div class="pagination">
+        <!-- <div class="pagination">
           <button class="prev-btn" disabled>Anterior</button>
           <span>Página 1 de 10</span>
           <button class="next-btn">Siguiente</button>
-        </div>
+        </div> -->
       </div>
     </div>
   </main>
@@ -122,6 +122,13 @@ const { users, usersLoading, usersError } = useUsers()
 }
 
 #loading {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 250px;
+}
+
+#loading h1 {
+  font-size: 3rem;
 }
 </style>

@@ -1,5 +1,5 @@
 import { ref, watch } from 'vue'
-import { useQuery, useLazyQuery } from '@apollo/client'
+import { useQuery, useLazyQuery } from '@vue/apollo-composable'
 import { GET_USERS, GET_USER } from '@/graphQl/getUsers.gql'
 import { useUsersStore } from '@/stores/counter'
 
