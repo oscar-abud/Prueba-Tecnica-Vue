@@ -13,6 +13,9 @@ export default function useUsers() {
 
   // Se ejecuta al montarse
   // Query para ejecutar todos los users
+  /* --------------------------------------
+    Query para todos los USERS
+  -------------------------------------- */
   const {
     result: usersResult,
     loading: usersLoading,
@@ -20,20 +23,10 @@ export default function useUsers() {
     refetch: refetchUsers,
   } = useQuery(GET_USERS, null, { fetchPolicy: 'network-only' })
 
-  // Query para ejecutar el user por id
-  const {
-    load: loadUser,
-    result: userResult,
-    loading: userLoading,
-    error: userError,
-  } = useLazyQuery(GET_USER, null, { fetchPolicy: 'network-only' })
-
   // Observadores
   // Las dependencias van en el primer parametro
   watch(usersLoading, (val) => store.setUsersLoading(val))
-
-  watch(usersError, (err) => (error ? store.setUsersError(err) : null))
-
+  watch(usersError, (err) => store.setUsersError(err))
   watch(usersResult, (dat) => {
     if (!dat) return
 
@@ -50,18 +43,46 @@ export default function useUsers() {
     store.setUsersLoading(true)
     return refetchUsers()
   }
+  /* --------------------------------------
+    Query para ejecutar el USER por id
+  -------------------------------------- */
+  const {
+    load: loadUser,
+    result: userResult,
+    loading: userLoading,
+    error: userError,
+  } = useLazyQuery(GET_USER, null, { fetchPolicy: 'network-only' })
+
+  watch(userLoading, (val) => store.setUserLoading(val))
+  watch(userError, (err) => store.setUserError(err))
+  watch(userResult, (dat) => {
+    if (!dat) return
+
+    const data = dat.user
+    currentUser.value = data
+    store.setCurrentUser(data)
+  })
+
+  function fetchUser(id) {
+    store.setUserLoading(true)
+    return loadUser({ id })
+  }
 
   // Exportando los valores y funciones para usar en componentes
   return {
     // Locales
     users,
+    currentUser,
 
     // Estados de control
     usersLoading,
     usersError,
+    userLoading,
+    userError,
 
     // Acciones
     fetchUsers,
+    fetchUser,
 
     // Acceso directo al store
     store,
