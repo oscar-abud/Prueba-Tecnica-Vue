@@ -1,4 +1,4 @@
-import { gql } from '@vue/apollo-composable'
+import { gql } from '@apollo/client/core'
 
 // Consulta para obtener los datos del usuario {id, name, email}
 export const GET_USERS = gql`
