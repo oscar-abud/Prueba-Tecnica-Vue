@@ -4,6 +4,8 @@ import Footer from '@/components/Footer.vue'
 // Tabla grid header
 import TableHeaderGrid from '@/components/TableHeader.vue'
 import TableUsersGrid from '@/components/TableUsers.vue'
+//Importando
+import useUsers from '../composables/useUsersQuerys'
 </script>
 
 <template>
@@ -19,7 +21,7 @@ import TableUsersGrid from '@/components/TableUsers.vue'
       <TableHeaderGrid />
 
       <!-- Filas de usuarios -->
-      <TableUsersGrid id="1" name="Oscar Palma" email="oscarP@mail.com" />
+      <!-- <TableUsersGrid id="1" name="Oscar Palma" email="oscarP@mail.com" /> -->
 
       <!-- Paginación -->
       <div class="pagination">
