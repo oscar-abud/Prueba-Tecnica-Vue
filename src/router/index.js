@@ -6,7 +6,7 @@ import Create from '@/pages/Create.vue'
 
 const routes = [
   { path: '/users', component: List },
-  { path: '/users/:id', component: Create, props: true },
+  { path: '/users/create', component: Create, props: true },
   { path: '/:pathMatch(.*)*', component: NotFound },
 ]
 
