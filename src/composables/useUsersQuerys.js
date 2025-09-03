@@ -1,24 +1,26 @@
 import { ref, watch } from 'vue'
 import { useQuery, useLazyQuery } from '@apollo/client'
 import { GET_USERS, GET_USER } from '@/graphQl/getUsers.gql'
+import { useUsersStore } from '@/stores/counter'
 
 export default function useUsers() {
-  //Lista de usuarios
+  // Store de Pinia para obtener los getters y setters
+  const store = useUsersStore()
+
+  // Estados locales (reactivos)
   const users = ref([])
-  // Guardaremos los datos que nos retorne la api en las siguientes variables
+  const currentUser = ref(null)
+
+  // Se ejecuta al montarse
+  // Query para ejecutar todos los users
   const {
     result: usersResult,
     loading: usersLoading,
     error: usersError,
-    refetch: refetchUsers, // Ejecuta la query manualmente p. ej. despues de un agregar
-  } = useQuery(
-    GET_USERS,
-    null,
-    { fetchPolicy: 'network-only' }, //Ignorara la cache y buscara siempre al servidor
-  )
+    refetch: refetchUsers,
+  } = useQuery(GET_USERS, null, { fetchPolicy: 'network-only' })
 
-  // Usuario individual (lazy)
-  const currentUser = ref(null)
+  // Query para ejecutar el user por id
   const {
     load: loadUser,
     result: userResult,
@@ -26,13 +28,42 @@ export default function useUsers() {
     error: userError,
   } = useLazyQuery(GET_USER, null, { fetchPolicy: 'network-only' })
 
-  // El useEffect de vue en accion
-  // usersResult sera la dependencia
-  watch(usersResult, (val) => {
-    if (!val) return
-    // Obtenemos los datos a traves de un operador ternario
-    const data = val.users && val.users.data ? val.users.data : []
+  // Observadores
+  // Las dependencias van en el primer parametro
+  watch(usersLoading, (val) => store.setUsersLoading(val))
+
+  watch(usersError, (err) => (error ? store.setUsersError(err) : null))
+
+  watch(usersResult, (dat) => {
+    if (!dat) return
+
+    const data = dat.users && dat.users.data ? dat.users.data : []
     users.value = data
-    // Guardamos los datos de la API en mi estado GLOBAL
+    // Guardamos los datos en Pinia para que sean globales
+    store.setUsers(data)
+    // Limpiamos posibles errores
+    store.resetUsersState(null)
   })
+
+  // Forzamos la recarga de la lista
+  function fetchUsers() {
+    store.setUsersLoading(true)
+    return refetchUsers()
+  }
+
+  // Exportando los valores y funciones para usar en componentes
+  return {
+    // Locales
+    users,
+
+    // Estados de control
+    usersLoading,
+    usersError,
+
+    // Acciones
+    fetchUsers,
+
+    // Acceso directo al store
+    store,
+  }
 }
