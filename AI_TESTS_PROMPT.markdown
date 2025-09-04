@@ -11,18 +11,7 @@ Este archivo contiene mi prompt original para generar tests unitarios detallados
 
 El código completo del proyecto es el siguiente: [INSERTA AQUÍ EL CÓDIGO COMPLETO DEL PROYECTO, INCLUYENDO HTML, CSS Y JS].
 
-Genera tests unitarios detallados para este código usando el framework Jest (elegido por su facilidad para DOM testing en aplicaciones web, aunque el prompt puede adaptarse a frameworks como Mocha o Vitest si es necesario). Sigue estas instrucciones estrictas:
-
-- Cubre todos los componentes principales: el rendering de la tabla, el formulario, las interacciones con botones y validaciones de inputs.
-- Incluye al menos 3-5 tests por componente o función clave, enfocándote en:
-  - Casos normales: por ejemplo, renderizar la tabla con datos válidos, enviar el formulario con inputs correctos.
-  - Casos de borde: valores nulos, strings vacíos, emails inválidos, IDs negativos, o acciones sin datos.
-  - Comportamiento interactivo: simula clicks en botones de acciones (ej. editar/eliminar), submit del form, y verifica cambios en el DOM o llamadas a funciones.
-  - Estilos y estructura: verifica que la grid de la tabla use las fracciones correctas (1fr/2fr/3fr/2fr), y que los inputs tengan el padding y ancho especificados.
-  - Errores y excepciones: tests que fallen intencionalmente si hay bugs, como inputs sin labels o botones sin transition.
-- Usa bloques 'describe' para agrupar tests por componente (ej. 'Tabla de Usuarios', 'Formulario de Edición'), e 'it' para cada test individual.
-- Asegúrate de que los tests sean independientes, usen mocks si hay funciones asíncronas o APIs, y no dependan de estado externo.
-- Retorna solo el código de los tests en formato JavaScript puro, listo para copiar en un archivo como 'app.test.js'. No agregues explicaciones extras ni código fuera de los tests."
+Genera tests unitarios detallados para este código usando el framework Jest (elegido por su facilidad para DOM testing en aplicaciones web, aunque el prompt puede adaptarse a frameworks como Mocha o Vitest si es necesario).
 
 ## Razones de Diseño
 
