@@ -16,4 +16,8 @@ header {
   align-items: center;
   justify-content: center;
 }
+
+header h1 {
+  text-align: center;
+}
 </style>
