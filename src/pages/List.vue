@@ -64,14 +64,19 @@ function handleDelete(id) {
 
         <TableHeaderGrid />
 
-        <TableUsersGrid
-          v-for="user in filteredUsers"
-          :key="Number(user.id)"
-          :id="Number(user.id)"
-          :name="user.name"
-          :email="user.email"
-          @delete="handleDelete"
-        />
+        <div v-if="store.users.length > 0 || filteredUsers.length > 0">
+          <TableUsersGrid
+            v-for="user in filteredUsers"
+            :key="Number(user.id)"
+            :id="Number(user.id)"
+            :name="user.name"
+            :email="user.email"
+            @delete="handleDelete"
+          />
+        </div>
+        <div v-else>
+          <h1>No hay usuarios por mostrar</h1>
+        </div>
       </div>
     </div>
   </main>
