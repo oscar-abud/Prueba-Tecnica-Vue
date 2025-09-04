@@ -38,3 +38,47 @@ function handleSubmit() {
     </div>
   </form>
 </template>
+
+<style scoped>
+form div {
+  margin-bottom: 0.5rem;
+}
+
+label {
+  display: inline-block;
+  width: 100px;
+}
+
+input {
+  padding: 0.5rem;
+  width: 200px;
+}
+
+.form-actions {
+  margin-top: 1rem;
+}
+
+.form-actions button {
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background-color: var(--green-color);
+  color: white;
+  opacity: 0.8;
+  transition: ease 0.2s;
+}
+
+.edit-btn:hover {
+  opacity: 1;
+}
+
+button[type='button'] {
+  background-color: #ccc;
+  color: black;
+}
+</style>
