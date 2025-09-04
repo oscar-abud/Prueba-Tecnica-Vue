@@ -7,6 +7,7 @@ import Footer from '@/components/Footer.vue'
 import TableHeaderGrid from '@/components/TableHeader.vue'
 import TableUsersGrid from '@/components/TableUsers.vue'
 import InputFilter from '@/components/InputFilter.vue'
+import FormEdit from '@/components/FormEdit.vue'
 
 /*-- STORE Y MUTACIONES --*/
 import { useUsersStore } from '@/stores/counter'
@@ -21,8 +22,6 @@ const { fetchUsers } = useUsers()
 onMounted(() => {
   fetchUsers()
 })
-
-console.log(store.users) // Esto seguirá saliendo vacío en la primera carga, pero se actualizará después.
 
 // Filtro
 const search = ref('')
@@ -45,8 +44,8 @@ function handleEdit(id) {
   isEditing.value = true
 }
 // Enviar los datos de la actualizacion
-function submitUpdate() {
-  const { id, name, email } = editingUser.value
+function submitUpdate(updatingUser) {
+  const { id, name, email } = updatingUser
   updateUser(id, { name, email })
     .then(() => {
       // Cerramos el form
@@ -95,23 +94,17 @@ function handleDelete(id) {
 
         <TableHeaderGrid />
 
-        <!-- Formulario de edición -->
+        <!-- Formulario de edicion -->
         <div v-if="isEditing" class="edit-form">
-          <h2>Editar Usuario</h2>
-          <form @submit.prevent="submitUpdate">
-            <div>
-              <label>Nombre:</label>
-              <input v-model="editingUser.name" required />
-            </div>
-            <div>
-              <label>Email:</label>
-              <input v-model="editingUser.email" type="email" required />
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="edit-btn">Guardar</button>
-              <button type="button" @click="cancelEdit">Cancelar</button>
-            </div>
-          </form>
+          <div v-if="!store.userError">
+            <FormEdit
+              :id="editingUser.id"
+              :name="editingUser.name"
+              :email="editingUser.email"
+              @sendSubmit="submitUpdate"
+              @cancel="cancelEdit"
+            />
+          </div>
         </div>
 
         <div v-if="store.users.length > 0 || filteredUsers.length > 0">
