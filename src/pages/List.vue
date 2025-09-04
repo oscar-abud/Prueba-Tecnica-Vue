@@ -15,7 +15,7 @@ import useUsers from '@/composables/useUsersQuerys' // Importa el composable
 
 const store = useUsersStore()
 const { deleteUser } = useUserMutation()
-const { fetchUsers } = useUsers() // Importa la función fetchUsers
+const { fetchUsers } = useUsers()
 
 // Llama a fetchUsers cuando el componente se monta
 onMounted(() => {
@@ -56,7 +56,8 @@ function handleDelete(id) {
       </div>
 
       <div v-else-if="store.usersError">
-        <h1>Error: {{ store.usersError }}</h1>
+        <h1>Error: {{ store.usersError.message }}</h1>
+        <button @click="fetchUsers">Reintentar</button>
       </div>
 
       <div v-else>
