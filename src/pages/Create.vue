@@ -67,7 +67,7 @@ const handleSubmit = async () => {
 
 <style scoped>
 main {
-  max-width: 1280px;
+  max-width: 100%;
   display: grid;
   place-items: center;
 }
@@ -77,11 +77,12 @@ form {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding: 20px 8%;
+  padding: 20px 5%;
   border-radius: 4px;
-  height: 300px;
+  min-height: 300px;
   align-items: center;
   justify-content: space-evenly;
+  gap: 5px;
 }
 
 .input {
