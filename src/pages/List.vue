@@ -135,6 +135,12 @@ function handleDelete(id) {
   font-family: Arial, sans-serif;
 }
 
+@media (width < 542px) {
+  .user-table-container {
+    padding: 0.15rem;
+  }
+}
+
 .title {
   font-size: 1.5rem;
   font-weight: bold;
