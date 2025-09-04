@@ -21,5 +21,6 @@ main {
 main h1 {
   font-size: 3.5rem;
   font-weight: 800;
+  text-align: center;
 }
 </style>
