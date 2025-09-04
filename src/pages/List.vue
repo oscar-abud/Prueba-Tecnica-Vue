@@ -14,7 +14,7 @@ import useUserMutation from '@/composables/useUserMutation'
 import useUsers from '@/composables/useUsersQuerys' // Importa el composable
 
 const store = useUsersStore()
-const { deleteUser } = useUserMutation()
+const { deleteUser, updateUser } = useUserMutation()
 const { fetchUsers } = useUsers()
 
 // Llama a fetchUsers cuando el componente se monta
@@ -33,6 +33,36 @@ const filteredUsers = computed(() => {
     (u) => u.name.toLowerCase().includes(val) || u.email.toLowerCase().includes(val),
   )
 })
+
+// Editar usuario
+const isEditing = ref(false)
+const editingUser = ref({ id: null, name: '', email: '' })
+// Abrir el form para guardar datos
+function handleEdit(id) {
+  const user = store.users.find((u) => Number(u.id) === id)
+  if (!user) return
+  editingUser.value = { id, name: user.name, email: user.email }
+  isEditing.value = true
+}
+// Enviar los datos de la actualizacion
+function submitUpdate() {
+  const { id, name, email } = editingUser.value
+  updateUser(id, { name, email })
+    .then(() => {
+      // Cerramos el form
+      isEditing.value = false
+      editingUser.value = { id: null, name: '', email: '' }
+    })
+    .catch((err) => {
+      alert(`Error al actualizar el usuario: ${err.message}`)
+    })
+}
+
+// Cancelar la edicion
+function cancelEdit() {
+  isEditing.value = false
+  editingUser.value = { id: null, name: '', email: '' }
+}
 
 // Eliminar usuario
 function handleDelete(id) {
@@ -65,6 +95,25 @@ function handleDelete(id) {
 
         <TableHeaderGrid />
 
+        <!-- Formulario de edición -->
+        <div v-if="isEditing" class="edit-form">
+          <h2>Editar Usuario</h2>
+          <form @submit.prevent="submitUpdate">
+            <div>
+              <label>Nombre:</label>
+              <input v-model="editingUser.name" required />
+            </div>
+            <div>
+              <label>Email:</label>
+              <input v-model="editingUser.email" type="email" required />
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="edit-btn">Guardar</button>
+              <button type="button" @click="cancelEdit">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
         <div v-if="store.users.length > 0 || filteredUsers.length > 0">
           <TableUsersGrid
             v-for="user in filteredUsers"
@@ -73,6 +122,7 @@ function handleDelete(id) {
             :name="user.name"
             :email="user.email"
             @delete="handleDelete"
+            @edit="handleEdit"
           />
         </div>
         <div v-else>
@@ -96,35 +146,6 @@ function handleDelete(id) {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
-}
-
-/* Botones */
-.actions button {
-  padding: 0.5rem 0.8rem;
-  margin-right: 0.3rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.edit-btn {
-  background-color: var(--green-color);
-  color: white;
-  opacity: 0.8;
-  transition: ease 0.2s;
-}
-
-.edit-btn:hover {
-  opacity: 1;
-}
-
-.delete-btn {
-  background-color: #ff4d4f;
-  color: white;
-}
-
-.delete-btn:hover {
-  background-color: #d9363e;
 }
 
 /* Loading */
