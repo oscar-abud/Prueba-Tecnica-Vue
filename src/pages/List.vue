@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 /*-- COMPONENTES --*/
 import Header from '@/components/Header.vue'
@@ -8,21 +8,28 @@ import TableHeaderGrid from '@/components/TableHeader.vue'
 import TableUsersGrid from '@/components/TableUsers.vue'
 import InputFilter from '@/components/InputFilter.vue'
 
-/*-- COMPOSABLES --*/
-// Query de usuarios
-import useUsers from '@/composables/useUsersQuerys'
-// Mutaciones (crear / eliminar)
+/*-- STORE Y MUTACIONES --*/
+import { useUsersStore } from '@/stores/counter'
 import useUserMutation from '@/composables/useUserMutation'
+import useUsers from '@/composables/useUsersQuerys' // Importa el composable
 
-const { users, usersLoading, usersError } = useUsers()
+const store = useUsersStore()
 const { deleteUser } = useUserMutation()
+const { fetchUsers } = useUsers() // Importa la función fetchUsers
+
+// Llama a fetchUsers cuando el componente se monta
+onMounted(() => {
+  fetchUsers()
+})
+
+console.log(store.users) // Esto seguirá saliendo vacío en la primera carga, pero se actualizará después.
 
 // Filtro
 const search = ref('')
 const filteredUsers = computed(() => {
   const val = search.value.trim().toLowerCase()
-  if (!val) return users.value
-  return users.value.filter(
+  if (!val) return store.users
+  return store.users.filter(
     (u) => u.name.toLowerCase().includes(val) || u.email.toLowerCase().includes(val),
   )
 })
@@ -44,29 +51,23 @@ function handleDelete(id) {
     <div class="user-table-container">
       <h1 class="title">Listado de Usuarios</h1>
 
-      <!-- Loading -->
-      <div v-if="usersLoading" id="loading">
+      <div v-if="store.usersLoading" id="loading">
         <h1>Cargando...</h1>
       </div>
 
-      <!-- Error -->
-      <div v-else-if="usersError">
-        <h1>Error: {{ usersError }}</h1>
+      <div v-else-if="store.usersError">
+        <h1>Error: {{ store.usersError }}</h1>
       </div>
 
-      <!-- Tabla -->
       <div v-else>
-        <!-- Filtro -->
         <InputFilter v-model="search" placeholder="Buscar usuario por nombre o email..." />
 
-        <!-- Tabla Header -->
         <TableHeaderGrid />
 
-        <!-- Filas -->
         <TableUsersGrid
           v-for="user in filteredUsers"
-          :key="user.id"
-          :id="user.id"
+          :key="Number(user.id)"
+          :id="Number(user.id)"
           :name="user.name"
           :email="user.email"
           @delete="handleDelete"

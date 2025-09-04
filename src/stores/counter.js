@@ -33,7 +33,7 @@ export const useUsersStore = defineStore('users', () => {
   }
 
   function removeUser(id) {
-    users.value = users.value.filter((u) => u.id !== id)
+    users.value = users.value.filter((u) => Number(u.id) !== id)
   }
 
   function setUsersLoading(flag) {

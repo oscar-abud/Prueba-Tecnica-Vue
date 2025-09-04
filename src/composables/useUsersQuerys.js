@@ -34,8 +34,8 @@ export default function useUsers() {
     users.value = data
     // Guardamos los datos en Pinia para que sean globales
     store.setUsers(data)
-    // Limpiamos posibles errores
-    store.resetUsersState(null)
+    store.setUsersLoading(false)
+    store.setUsersError(null)
   })
 
   // Forzamos la recarga de la lista

@@ -35,6 +35,7 @@ export default function usePostMutation() {
 
   function deleteUser(id) {
     return deleteUserMutation({ id }).then(() => {
+      alert(`Usuario con ID: ${id} eliminado!`)
       store.removeUser(id)
     })
   }
