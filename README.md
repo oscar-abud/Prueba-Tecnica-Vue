@@ -1,81 +1,53 @@
-# pru-tec
+# Reto Técnico - Frontend Vue 3 + Apollo GraphQL (GraphQLZero)
 
-Guía rápida (paso a paso) para instalar las dependencias necesarias y poner en marcha el proyecto.
+Una SPA en Vue 3 que consume la API pública GraphQLZero para gestionar usuarios (listado, filtro, creación, edición y eliminación). Enfoque en arquitectura clara, componentes reutilizables y manejo de estados con Pinia y Apollo.
 
-Requisitos
+## Prerrequisitos
 
-- Node.js >= 16 (recomendado). Verifica con:
-  ```sh
-  node -v
-  ```
-- npm (v8+) o yarn.
+- Node.js: Versión 18+ (recomendada 20+). Descárgalo desde [nodejs.org](https://nodejs.org).
+- npm: Viene incluido con Node.js.
+- No se requieren variables de entorno, ya que el endpoint GraphQL está hardcoded en `apollo.js` (`https://graphqlzero.almansi.me/api`). Si quieres hacerlo configurable, crea un archivo `.env` con `VITE_API_URL=https://tu-endpoint` y úsalo en el código como `import.meta.env.VITE_API_URL`.
 
-1. Instalar dependencias desde package.json
+## Instalación
 
-- Si ya tienes package.json en el proyecto:
-  ```sh
-  npm install
-  ```
-  Esto instalará todas las dependencias listadas en package.json.
+1. Clona el repositorio:
+   git clone https://github.com/oscar-abud/Prueba-Tecnica-Vue
+   cd pru-tec
 
-2. Dependencias específicas usadas en el proyecto
-   El proyecto usa Vue 3 + Vite, Pinia y Apollo Client (GraphQL). Si alguna dependencia falta, instala las siguientes:
+2. Instala las dependencias:
+   npm run install-deps
 
-- Dependencias principales:
+## Scripts para Ejecutar
 
-  ```sh
-  npm install vue@3 pinia @apollo/client graphql @vue/apollo-composable cross-fetch
-  ```
+Usa estos comandos desde la terminal en la raíz del proyecto:
 
-  - vue@3: framework.
-  - pinia: store (tu estado global).
-  - @apollo/client: cliente Apollo (incluye gql).
-  - graphql: required runtime para Apollo.
-  - @vue/apollo-composable: helpers Composition API para Apollo.
-  - cross-fetch: polyfill fetch (útil en algunos entornos).
-
-3. (Opcional) Dependencias de desarrollo comunes
-
-- Si necesitas herramientas de lint/format:
-  ```sh
-  npm install -D vite eslint prettier
-  ```
-
-4. Scripts útiles
-
-- Ejecutar modo desarrollo:
-  ```sh
+- **Modo desarrollo**:
   npm run dev
-  ```
-- Compilar para producción:
-  ```sh
+  Abre `http://localhost:5173` en tu navegador.
+
+- **Construir para producción**:
   npm run build
-  ```
-- Ejecutar linter / formateador (si los instalaste):
-  ```sh
-  npm run lint
+- **Previsualizar build**:
+  npm run preview
+- **Formatear código** (con Prettier):
   npm run format
-  ```
+- **Linting** (opcional, si agregas ESLint):
+  npm run lint
 
-5. Comprobaciones y solución de problemas
+## Arquitectura y Decisiones
 
-- Si recibes errores 400 o problemas con las consultas/mutations:
-  - Abre DevTools → Network → revisa el body de la petición POST y la respuesta del servidor.
-  - Asegúrate de que las variables se envían como { variables: { id: "..." } } en las mutaciones.
-  - Verifica el endpoint GraphQL (en el setup del cliente Apollo).
-- Si falta algún módulo: ejecuta `npm ls <nombre-paquete>` para ver estado e instalar el paquete faltante con `npm install <paquete>`.
+- **Framework**: Vue 3 con Composition API y `<script setup>` para lógica modular y reactiva.
+- **Estado Global**: Pinia para manejar usuarios, loading y errors (e.g., `useUsersStore` en `counter.js`).
+- **GraphQL**: Apollo Client para queries/mutations (e.g., `useUsersQuerys.js` para GET, `useUserMutation.js` para CRUD). Usé `fetchPolicy: 'network-only'` para datos frescos, y updates locales en Pinia para consistencia inmediata.
+- **Enrutamiento**: Vue Router con rutas para listado (`/users`) y creación (`/users/create`).
+- **Componentes**: Reutilizables como `InputFilter` (filtro), `FormEdit` (edición), `TableUsersGrid` (grid).
+- **Decisiones**: Elegí Users como entidad (en vez de Posts) para simplicidad, ya que cubre el alcance CRUD. No usé Apollo cache updates avanzados para mantenerlo básico, priorizando Pinia para estado. Filtros client-side en `List.vue` con `computed` para rendimiento.
 
-6. Crear el proyecto desde cero (si no tienes package.json)
+## Qué Haría con Más Tiempo
 
-- Para crear un nuevo proyecto Vite + Vue 3:
-  ```sh
-  npm create vite@latest pru-tec -- --template vue
-  cd pru-tec
-  npm install
-  ```
-  Luego añade las dependencias listadas en el paso 2.
-
-Notas finales
-
-- Después de instalar, inicia con `npm run dev`. Si ves errores relacionados con Apollo o GraphQL, revisa que las importaciones en `src/graphQl/*.gql.js` y la configuración del cliente Apollo estén correctas.
-- Si necesitas, puedo generar el archivo de configuración del cliente Apollo (ej. `src/apollo/client.js`) o ajustar las mutaciones/queries para el endpoint que estés usando.
+- Implementar paginación server-side en GET_USERS con variables de GraphQL (skip, limit).
+- Agregar ruta de detalle (/users/:id) con GET_USER y comentarios relacionados para asi mostrar más información de los usuarios como dirección e implementar ahi mismo la paginación.
+- Mejorar responsive con media queries o una librería como Tailwind CSS.
+- Añadir tests unitarios con Vitest/Jest para componentes y composables.
+- Integrar Apollo cache updates (e.g., `writeQuery`) para consistencia sin refetch.
+- Refactorizar errores con toast notifications (e.g., Vue Toastification).
