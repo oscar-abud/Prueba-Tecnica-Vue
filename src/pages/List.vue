@@ -96,7 +96,7 @@ function handleDelete(id) {
 
         <!-- Formulario de edicion -->
         <div v-if="isEditing" class="edit-form">
-          <div v-if="!store.userError">
+          <div v-if="!store.userError" class="formEdit">
             <FormEdit
               :id="editingUser.id"
               :name="editingUser.name"
@@ -139,6 +139,16 @@ function handleDelete(id) {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
+}
+
+/* FormEdit */
+.formEdit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  min-height: 200px;
+  min-width: 250px;
 }
 
 /* Loading */
