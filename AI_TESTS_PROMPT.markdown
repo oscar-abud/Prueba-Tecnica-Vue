@@ -4,7 +4,7 @@ Este archivo contiene mi prompt original para generar tests unitarios detallados
 
 ## Prompt para Generar Tests Unitarios Detallados
 
-"Actúa como un ingeniero de software experto en testing automatizado. Tengo un proyecto web simple en JavaScript con HTML y CSS puro, que incluye:
+"Actúa como un ingeniero de software experto en testing automatizado. Tengo un proyecto web CRUD en JavaScript con su framework Vue.js versión 3 con HTML y CSS puro, que incluye:
 
 - Una tabla de usuarios hecha con CSS Grid, con columnas para id (1fr), nombre (2fr), correo (3fr) y acciones (2fr). La tabla se renderiza dinámicamente con datos de usuarios.
 - Un formulario de edición con labels e inputs para nombre y email (cada input con padding de 0.5rem y ancho de 200px), más dos botones: uno de submit (con color var(--green-color), transition ease de 0.2s, opacity 0.8 que pasa a 1 en hover) y otro de cancelar.
