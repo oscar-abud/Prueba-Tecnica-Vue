@@ -5,7 +5,7 @@ defineProps({
   name: String,
   email: String,
 })
-const emit = defineEmits(['delete'])
+const emit = defineEmits(['delete', 'edit'])
 </script>
 
 <template>
@@ -15,7 +15,7 @@ const emit = defineEmits(['delete'])
     <div>{{ name }}</div>
     <div>{{ email }}</div>
     <div class="actions">
-      <button class="edit-btn">Editar</button>
+      <button class="edit-btn" @click="emit('edit', id)">Editar</button>
       <button class="delete-btn" @click="emit('delete', id)">Eliminar</button>
     </div>
   </div>
