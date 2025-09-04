@@ -51,3 +51,4 @@ Usa estos comandos desde la terminal en la raíz del proyecto:
 - Añadir tests unitarios con Vitest/Jest para componentes y composables.
 - Integrar Apollo cache updates (e.g., `writeQuery`) para consistencia sin refetch.
 - Refactorizar errores con toast notifications (e.g., Vue Toastification).
+- Aprender más sobre Vue 3, Apollo y lo relacionado con la paginación por CSR para anotarlo en mi Notion personal y estudiar y probar los casos de la misma API.
